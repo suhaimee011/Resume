@@ -47,9 +47,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(15, 23, 42, 0.95); /* เพิ่มความทึบแสงนิดหน่อย */
             backdrop-filter: blur(12px);
-            z-index: 999;
+            z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
@@ -65,6 +65,12 @@
             -webkit-text-fill-color: transparent;
         }
 
+        /* เมนู Desktop ปกติ */
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
         .nav-links a {
             color: var(--text-main);
             text-decoration: none;
@@ -74,10 +80,35 @@
             opacity: 0.8;
         }
 
-        .nav-links a:hover {
+        .nav-links a:not(.btn-cv):hover {
             opacity: 1;
             color: #a855f7;
             text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        /* ปุ่ม Hamburger (ซ่อนใน Desktop) */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-main);
+        }
+
+        /* ปุ่ม Download CV (ใน Nav) */
+        .btn-cv {
+            padding: 8px 20px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            color: white !important;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            opacity: 1 !important;
         }
 
         /* --- Hero Section --- */
@@ -134,7 +165,6 @@
 
         .hero-text p { color: var(--text-sub); margin-bottom: 2rem; max-width: 500px; line-height: 1.7; }
 
-        /* Social Buttons */
         .social-buttons { display: flex; gap: 1rem; margin-top: 1rem; }
         .social-icon {
             width: 50px; height: 50px;
@@ -181,9 +211,7 @@
             border-radius: 2px;
         }
 
-        /* --- Cards & Grid --- */
         .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-        
         .card {
             background: var(--card-bg); padding: 2.5rem;
             border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05);
@@ -197,26 +225,18 @@
         .info-row { display: flex; align-items: center; margin-bottom: 1.2rem; color: var(--text-sub); font-size: 1rem; }
         .info-row i { width: 35px; color: #3b82f6; font-size: 1.1rem; }
 
-        /* --- Project Link Card Style (สำหรับทำให้การ์ดกดได้) --- */
+        /* Project Cards */
         a.project-card {
-            text-decoration: none;
-            display: block;
-            color: inherit;
-            height: 100%;
-            padding: 0 !important;
-            overflow: hidden;
+            text-decoration: none; display: block; color: inherit;
+            height: 100%; padding: 0 !important; overflow: hidden;
         }
-        
         .project-img { height: 200px; overflow: hidden; background: #000; }
         .project-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; opacity: 0.8; }
-        
         a.project-card:hover .project-img img { transform: scale(1.1); opacity: 1; }
         a.project-card:hover {
-            border-color: var(--gradient-start);
-            transform: translateY(-10px);
+            border-color: var(--gradient-start); transform: translateY(-10px);
             box-shadow: 0 20px 40px rgba(168, 85, 247, 0.3);
         }
-
         .project-info { padding: 1.5rem; }
         .tech-stack { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
         .tech-stack span {
@@ -225,7 +245,6 @@
             color: var(--text-main); border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* --- Skills --- */
         .skills-container { max-width: 800px; margin: 0 auto; }
         .skill-item { margin-bottom: 2rem; opacity: 0; transform: translateX(-30px); transition: 0.5s; }
         .skill-item.show { opacity: 1; transform: translateX(0); }
@@ -237,7 +256,6 @@
             border-radius: 10px; box-shadow: 0 0 15px var(--accent-glow);
         }
 
-        /* --- Timeline --- */
         .timeline { position: relative; max-width: 800px; margin: 0 auto; }
         .timeline::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 2px; background: rgba(255, 255, 255, 0.1); }
         .timeline-item { position: relative; padding-left: 2.5rem; margin-bottom: 3.5rem; opacity: 0; transform: translateX(20px); transition: 0.5s; }
@@ -264,14 +282,75 @@
         @keyframes blink { 50% { border-color: transparent; } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
+        /* --- Mobile Responsive (อัปเดตใหม่) --- */
         @media (max-width: 768px) {
-            .hero-container { flex-direction: column-reverse; text-align: center; }
-            .hero-text h1 { font-size: 2.5rem; }
-            .hero-text p { margin: 0 auto 2rem; }
+            /* 1. จัดการ Navbar สำหรับมือถือ */
+            nav {
+                padding: 1rem 5%;
+            }
+
+            /* แสดงปุ่ม Hamburger */
+            .hamburger {
+                display: block;
+            }
+
+            /* แปลงเมนูเป็นแบบ Dropdown */
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(15, 23, 42, 0.98); /* พื้นหลังทึบขึ้น */
+                backdrop-filter: blur(15px);
+                flex-direction: column; /* เรียงแนวตั้ง */
+                align-items: center;
+                padding: 2rem 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                
+                /* ซ่อนเมนูไว้ก่อน */
+                display: none; 
+            }
+
+            /* Class สำหรับแสดงเมนู (จะถูกใส่โดย JS) */
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                margin: 1rem 0; /* ระยะห่างระหว่างเมนู */
+                font-size: 1.1rem;
+                margin-left: 0; /* รีเซ็ตค่าเดิม */
+            }
+
+            /* 2. จัด Hero Section ให้อยู่กลาง */
+            .hero-container {
+                flex-direction: column-reverse; /* เอารูปไว้บน */
+                text-align: center;
+                padding-top: 2rem;
+            }
+
+            .hero-text h1 { font-size: 2.2rem; }
+            .hero-text h2 { font-size: 1.5rem; }
+            .hero-text p { margin: 0 auto 2rem; font-size: 0.9rem; }
+            
+            /* จัดปุ่ม Social ให้อยู่กลาง */
             .social-buttons { justify-content: center; }
-            .img-box { width: 300px; height: 300px; margin: 0 auto 2rem; } 
+
+            /* 3. ปรับขนาดรูป */
+            .img-box {
+                width: 280px;
+                height: 280px;
+                margin: 0 auto 2rem;
+            }
+
+            /* 4. ปรับ Grid ต่างๆ ให้เป็นแถวเดียว */
+            .about-grid { grid-template-columns: 1fr; }
+            
+            /* 5. ปรับ Timeline */
             .timeline::before { left: 0; }
             .timeline-item { padding-left: 2rem; }
+            .timeline-content::before { display: none; } /* ซ่อนลูกศร */
         }
     </style>
 </head>
@@ -279,6 +358,11 @@
 
     <nav>
         <div class="logo">PORTFOLIO<span>.</span></div>
+        
+        <div class="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+
         <div class="nav-links">
             <a href="#about">เกี่ยวกับฉัน</a>
             <a href="#skills">ทักษะ</a>
@@ -321,7 +405,7 @@
         <div class="about-grid">
             <div class="card">
                 <h3><i class="fas fa-user-astronaut"></i> ข้อมูลส่วนตัว</h3>
-                <div class="info-row"><i class="fas fa-birthday-cake"></i> อายุ: 21 ปี</div>
+                <div class="info-row"><i class="fas fa-birthday-cake"></i> อายุ: 21 ปี (27 มีนาคม 2547)</div>
                 <div class="info-row"><i class="fas fa-map-marker-alt"></i> ยะลา, ประเทศไทย</div>
                 <div class="info-row"><i class="fas fa-envelope"></i> 406565011@yru.ac.th</div>
                 <div class="info-row"><i class="fas fa-phone"></i> 062-4867973</div>
@@ -370,9 +454,9 @@
         <h2 class="section-title"><span>ผลงานของฉัน</span></h2>
         <div class="about-grid">
             
-            <a href="##########" target="_blank" class="card project-card"> 
+            <a href="#" target="_blank" class="card project-card">
                 <div class="project-img">
-                    <img src="91234.jpg" alt="Server Room">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef526b0042a0?q=80&w=1000&auto=format&fit=crop" alt="Server Room">
                 </div>
                 <div class="project-info">
                     <h3>
@@ -388,9 +472,9 @@
                 </div>
             </a>
 
-            <a href="http://406565011.student.yru.ac.th/massage-booking-system/login.php" target="_blank" class="card project-card">
+            <a href="#" target="_blank" class="card project-card">
                 <div class="project-img">
-                    <img src="9123.png" alt="Booking System">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop" alt="Booking System">
                 </div>
                 <div class="project-info">
                     <h3>
@@ -414,7 +498,7 @@
         <div class="timeline">
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
-                <span class="timeline-date">2568 (ล่าสุด)</span>
+                <span class="timeline-date">2567 (ล่าสุด)</span>
                 <div class="timeline-content">
                     <h3>โรงพยาบาลหาดใหญ่</h3>
                     <h4>Programmer, IT Support (นักศึกษาฝึกงาน)</h4>
@@ -460,6 +544,7 @@
     </footer>
 
     <script>
+        // Typing Effect
         const textElement = document.getElementById('typing');
         const words = ["Programmer", "IT Support", "Network Admin", "Tech Enthusiast"];
         let wordIndex = 0; let charIndex = 0; let isDeleting = false;
@@ -476,6 +561,7 @@
         }
         document.addEventListener('DOMContentLoaded', type);
 
+        // Scroll Animation
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -488,6 +574,34 @@
 
         const hiddenElements = document.querySelectorAll('.card, .skill-item, .timeline-item');
         hiddenElements.forEach((el) => observer.observe(el));
+
+        // --- Mobile Menu Toggle Script (ส่วนที่เพิ่มใหม่) ---
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            
+            // เปลี่ยนไอคอนเป็นกากบาท (Optional)
+            const icon = hamburger.querySelector('i');
+            if(navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // ปิดเมนูเมื่อกดลิ้งค์
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                const icon = hamburger.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
     </script>
 </body>
 </html>
